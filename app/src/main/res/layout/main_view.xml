@@ -3,8 +3,14 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
+    <com.last.paint.CanvasView
+        android:id="@+id/canvas_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true" />
+
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/side_menu"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
@@ -65,12 +71,5 @@
             android:text="@string/back" />
 
     </LinearLayout>
-
-    <com.last.paint.CanvasView
-        android:id="@+id/canvas_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/linearLayout" />
 
 </RelativeLayout>

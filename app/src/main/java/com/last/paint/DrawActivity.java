@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -13,16 +14,17 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
-import com.flask.colorpicker.ColorPickerView;
-import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
+import com.transitionseverywhere.Slide;
+import com.transitionseverywhere.TransitionManager;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -38,6 +40,8 @@ import yuku.ambilwarna.AmbilWarnaDialog;
 
 public class DrawActivity extends AppCompatActivity {
     private CanvasView mCanvasView;
+    private LinearLayout mSideMenu;
+    private boolean mIsShowing = true;
     private static final int REQUEST_READ_EXTERNAL_STORAGE = 0;
     private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 1;
     private static final int PICK_IMAGE = 3;
@@ -48,6 +52,9 @@ public class DrawActivity extends AppCompatActivity {
         setContentView(R.layout.main_view);
 
         mCanvasView = findViewById(R.id.canvas_view);
+
+        mSideMenu = findViewById(R.id.side_menu);
+        mSideMenu.setBackgroundColor(Color.LTGRAY);
 
         Button circleButton = findViewById(R.id.circle_button);
         circleButton.setOnClickListener(view -> mCanvasView.setFigureType(FigureType.CIRCLE));
@@ -111,6 +118,17 @@ public class DrawActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.show_tools:
+                if (mIsShowing) {
+                    mIsShowing = false;
+                    TransitionManager.beginDelayedTransition(mSideMenu, new Slide(Gravity.START));
+                    mSideMenu.setVisibility(View.GONE);
+                } else {
+                    mIsShowing = true;
+                    TransitionManager.beginDelayedTransition(mSideMenu, new Slide(Gravity.START));
+                    mSideMenu.setVisibility(View.VISIBLE);
+                }
+                return true;
             case R.id.open:
                 if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(getApplicationContext(),
                         Manifest.permission.READ_EXTERNAL_STORAGE)) {
